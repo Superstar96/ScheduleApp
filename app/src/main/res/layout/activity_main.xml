@@ -36,13 +36,20 @@
 
         <ImageButton
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_list_black_24dp"
+            android:onClick="onListButtonClicked"
+            android:layout_weight="1"
+            android:background="@null"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_home_black_24dp"
             android:onClick="onExitButtonClicked"
-            android:layout_weight="1.17"
+            android:layout_weight="1"
             android:background="@null"/>
 
     </LinearLayout>
-
 
 </LinearLayout>

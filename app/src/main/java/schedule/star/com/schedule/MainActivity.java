@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onExitButtonClicked(View v) {this.finish();}
 
+    public void onListButtonClicked(View v)
+    {
+        Intent intent = new Intent(this, ListActivity.class);
+
+        startActivity(intent);
+    }
+
     public void onSetAlarmButtonClicked(View v)
     {
         Toast.makeText(this, "ALARM SETTED", Toast.LENGTH_LONG).show();
