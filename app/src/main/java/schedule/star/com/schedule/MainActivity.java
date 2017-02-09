@@ -34,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, ListActivity.class);
 
+        ArrayList<Alarm> alarm = new ArrayList<>();
+
+        alarm.add(new Alarm("12:45", true));
+        alarm.add(new Alarm("14:09", true));
+        alarm.add(new Alarm("08:34", true));
+        alarm.add(new Alarm("17:29", true));
+        alarm.add(new Alarm("23:56", true));
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("LIST", alarm);
+
+        intent.putExtra("BUNDLE", bundle);
+
         startActivity(intent);
     }
 
