@@ -1,7 +1,10 @@
 package schedule.star.com.schedule;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +57,8 @@ public class AlarmAdapter extends BaseAdapter {
     {
         View alarmView;
         final ViewHolder holder = new ViewHolder();
+        final Alarm alarm = this.getItem(position);
+        final PendingIntent pendingIntent = alarm.getPendingIntent();
 
         alarmView = m_layoutInflater.inflate(R.layout.layout_alarm, null);
 
@@ -63,7 +68,10 @@ public class AlarmAdapter extends BaseAdapter {
 
         holder.buttonActivate = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAEGBUTTON_ACTIVATE);
         holder.buttonCancel = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAGEBUTTON_CANCEL);
-        holder.buttonCancel.setAlpha(0.3f);
+
+        holder.buttonActivate.setAlpha(0.3f);
+
+        //Button Listeners
 
         holder.buttonActivate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +80,9 @@ public class AlarmAdapter extends BaseAdapter {
                 Toast.makeText(m_context, "BUTTON ACTIVATE", Toast.LENGTH_LONG).show();
                 holder.buttonCancel.setAlpha(1f);
                 holder.buttonActivate.setAlpha(0.3f);
+                AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
+                Toast.makeText(m_context, alarm.getDifference()/1000. + "", Toast.LENGTH_LONG).show();
+                manager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + alarm.getDifference(), pendingIntent);
             }
         });
 
@@ -82,6 +93,8 @@ public class AlarmAdapter extends BaseAdapter {
                 Toast.makeText(m_context, "BUTTON CANCEL", Toast.LENGTH_LONG).show();
                 holder.buttonActivate.setAlpha(1f);
                 holder.buttonCancel.setAlpha(0.3f);
+                AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
+                manager.cancel(pendingIntent);
             }
         });
 

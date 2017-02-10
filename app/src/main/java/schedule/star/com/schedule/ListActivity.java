@@ -19,13 +19,15 @@ public class ListActivity extends AppCompatActivity {
     private void init() //MainActivity'de kullanıcının ayarladığı saatleri Bundle'dan al ve Özel olarak oluşturduğun Adaptöre ver ve Adaptörü ListView'a bağla.
     {
         m_listView = (ListView)this.findViewById(R.id.LISTACTIVITY_LISTVIEW_ALARMLIST);
-        Intent intent = this.getIntent();
+        //Intent intent = this.getIntent();
 
-        Bundle bundle = intent.getBundleExtra("BUNDLE");
+        //Bundle bundle = intent.getBundleExtra("BUNDLE");
 
         ArrayList<Alarm> alarms = new ArrayList<>();
 
-        alarms = (ArrayList<Alarm>) bundle.getSerializable("LIST");
+        //alarms = (ArrayList<Alarm>) bundle.getSerializable("LIST");
+
+        alarms = MainActivity.m_alarms;
 
         m_alarmAdapter = new AlarmAdapter(this, alarms);
 

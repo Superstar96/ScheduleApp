@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private AlarmReceiver m_alarmReceiver;
     private AlarmManager m_alarmManager;
     private PendingIntent m_pendingIntent;
-    private Calendar m_calendar;
-    private ArrayList<Alarm> m_alarms;
+    private GregorianCalendar m_calendar;
+    public static ArrayList<Alarm> m_alarms;
     private static int m_count = 0;
 
     private void init()
@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         alarm.add(new Alarm("17:29", true));
         alarm.add(new Alarm("23:56", true));*/
 
-        Bundle bundle = new Bundle();
+/*        Bundle bundle = new Bundle();
         bundle.putSerializable("LIST", m_alarms);
 
-        intent.putExtra("BUNDLE", bundle);
+        intent.putExtra("BUNDLE", bundle);*/
 
         startActivity(intent);
     }
@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent (this, AlarmReceiver.class);
         intent.putExtra("TIME", time);
-
-        m_alarms.add(new Alarm(time, true));
 
         m_calendar = new GregorianCalendar();
 
@@ -76,9 +74,13 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "FARK = " + difference/1000., Toast.LENGTH_LONG).show();
 
         //Alttaki Kısım Zamanı Gelince Alarmı Çaldırma İşini Yapacak (Tasarım problemleri çözülene kadar bu kısım yorum satırına alınmıştır)
-        /*m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+
+        m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
         m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
-        m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);*/
+
+        m_alarms.add(new Alarm(time, true, m_pendingIntent, m_calendar));
+
+        m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);
     }
 
     @Override
