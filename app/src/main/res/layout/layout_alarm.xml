@@ -27,7 +27,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/alarmoff"
+        app:srcCompat="@drawable/alarmcancel"
         android:onClick="onAlarmCanceledButtonClicked"
         android:id="@+id/ALARMLAYOUT_IMAGEBUTTON_CANCEL"
         android:layout_weight="1"

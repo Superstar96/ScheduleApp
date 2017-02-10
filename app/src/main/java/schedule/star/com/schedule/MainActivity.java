@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -16,22 +17,35 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     private TimePicker m_alarmTimer;
+    private AlarmAdapter m_alarmAdapter;
     private AlarmReceiver m_alarmReceiver;
+    private ListView m_alarmListView;
     private AlarmManager m_alarmManager;
     private PendingIntent m_pendingIntent;
     private GregorianCalendar m_calendar;
     public static ArrayList<Alarm> m_alarms;
     private static int m_count = 0;
 
+    //*************************************************************************************************************************************************
+
+    //INITIALIZERS
+
     private void init()
     {
-        m_alarmTimer = (TimePicker)this.findViewById(R.id.MAINACTIVITY_TIMEPICKER_ALARM);
         m_alarms = new ArrayList<>();
         this.initGUI();
     }
 
     private void initGUI()
     {
+        m_alarmTimer = (TimePicker)this.findViewById(R.id.MAINACTIVITY_TIMEPICKER_ALARM);
+
+        m_alarmListView = (ListView)this.findViewById(R.id.MAINACTIVITY_LISTVIEW_ALARMLIST);
+
+        m_alarmAdapter = new AlarmAdapter(this, m_alarms);
+
+        m_alarmListView.setAdapter(m_alarmAdapter);
+
         TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
 
@@ -51,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabthird);
     }
 
+    //*************************************************************************************************************************************************
+
     //BUTTON METHODS
 
     public void onExitButtonClicked(View v) {this.finish();}
@@ -58,17 +74,6 @@ public class MainActivity extends AppCompatActivity {
     public void onListButtonClicked(View v) //Kullanıcın ayarladağı saatleri tutan ArrayList'i Bundle'a koy ve Intent ile diğer aktiviteyi başlatıp ona gönder.
     {
         Intent intent = new Intent(this, ListActivity.class);
-
-/*     alarm.add(new Alarm("12:45", true));
-        alarm.add(new Alarm("14:09", true));
-        alarm.add(new Alarm("08:34", true));
-        alarm.add(new Alarm("17:29", true));
-        alarm.add(new Alarm("23:56", true));*/
-
-/*        Bundle bundle = new Bundle();
-        bundle.putSerializable("LIST", m_alarms);
-
-        intent.putExtra("BUNDLE", bundle);*/
 
         startActivity(intent);
     }
@@ -84,33 +89,31 @@ public class MainActivity extends AppCompatActivity {
 
         m_calendar = new GregorianCalendar();
 
-        //Toast.makeText(this, "Şuan = " + System.currentTimeMillis() + "", Toast.LENGTH_LONG).show();
-
         m_calendar.set(Calendar.HOUR_OF_DAY, m_alarmTimer.getHour());
         m_calendar.set(Calendar.MINUTE, m_alarmTimer.getMinute());
         m_calendar.set(Calendar.SECOND, 0);
 
-        //Toast.makeText(this, "Ayarlanan = "+ m_calendar.getTimeInMillis() + "", Toast.LENGTH_LONG).show();
-
         long difference = m_calendar.getTimeInMillis() - System.currentTimeMillis();
 
-        Toast.makeText(this, "FARK = " + difference/1000., Toast.LENGTH_LONG).show();
-
-        //Alttaki Kısım Zamanı Gelince Alarmı Çaldırma İşini Yapacak (Tasarım problemleri çözülene kadar bu kısım yorum satırına alınmıştır)
+        Toast.makeText(this, "Alarmın Çalmasına Kalan Süre = " + difference/1000. + " sn", Toast.LENGTH_LONG).show();
 
         m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
         m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
 
         m_alarms.add(new Alarm(time, true, m_pendingIntent, m_calendar));
+        m_alarmAdapter.notifyDataSetChanged();
 
         m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);
     }
+
+    //*************************************************************************************************************************************************
+
+    //OVERRIDE METHODS
 
     @Override
     protected void onResume()
     {
         m_alarmReceiver = new AlarmReceiver();
-
         super.onResume();
     }
 
