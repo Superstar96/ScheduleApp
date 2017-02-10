@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TabHost;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import java.util.*;
@@ -26,6 +27,28 @@ public class MainActivity extends AppCompatActivity {
     {
         m_alarmTimer = (TimePicker)this.findViewById(R.id.MAINACTIVITY_TIMEPICKER_ALARM);
         m_alarms = new ArrayList<>();
+        this.initGUI();
+    }
+
+    private void initGUI()
+    {
+        TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
+        tabHost.setup();
+
+        TabHost.TabSpec tabfirst = tabHost.newTabSpec("TAG1");
+        tabfirst.setContent(R.id.tab1);
+        tabfirst.setIndicator("TIME");
+        tabHost.addTab(tabfirst);
+
+        TabHost.TabSpec tabsecond = tabHost.newTabSpec("TAG2");
+        tabsecond.setContent(R.id.tab2);
+        tabsecond.setIndicator("DATE");
+        tabHost.addTab(tabsecond);
+
+        TabHost.TabSpec tabthird = tabHost.newTabSpec("TAG3");
+        tabthird.setContent(R.id.tab3);
+        tabthird.setIndicator("ALARMS");
+        tabHost.addTab(tabthird);
     }
 
     //BUTTON METHODS
