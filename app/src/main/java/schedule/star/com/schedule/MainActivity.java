@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent m_pendingIntent;
     private Calendar m_calendar;
     private ArrayList<Alarm> m_alarms;
-    private static int count = 0;
+    private static int m_count = 0;
 
     private void init()
     {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Alttaki Kısım Zamanı Gelince Alarmı Çaldırma İşini Yapacak (Tasarım problemleri çözülene kadar bu kısım yorum satırına alınmıştır)
         /*m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
-        m_pendingIntent = PendingIntent.getBroadcast(this, count++ , intent, 0);
+        m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
         m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);*/
     }
 

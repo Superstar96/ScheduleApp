@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import java.util.List;
 
 /**
- * Created by msı on 10.02.2017.
+ * Created by SUPERSTAR on 10.02.2017.
  */
 
 public class AlarmAdapter extends BaseAdapter {
@@ -52,20 +53,35 @@ public class AlarmAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) //Inflate işlemini yapıp oluşan View'u geri döndürecek method (ListView'un her bir satırında gösterilecek View burada oluşturulur)
     {
         View alarmView;
+        final ViewHolder holder = new ViewHolder();
 
         alarmView = m_layoutInflater.inflate(R.layout.layout_alarm, null);
 
-        TextView textView = (TextView) alarmView.findViewById(R.id.ALARMLAYOUT_TEXTVIEW_ALARMTIME);
+        holder.alarmTime = (TextView) alarmView.findViewById(R.id.ALARMLAYOUT_TEXTVIEW_ALARMTIME);
 
-        textView.setText(m_alarmList.get(position).getAlarmTime());
+        holder.alarmTime.setText(m_alarmList.get(position).getAlarmTime());
 
-        ImageButton button = (ImageButton) alarmView.findViewById(R.id.ALARMLAYOUT_BUTTON_CANCEL);
+        holder.buttonActivate = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAEGBUTTON_ACTIVATE);
+        holder.buttonCancel = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAGEBUTTON_CANCEL);
+        holder.buttonCancel.setAlpha(0.3f);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        holder.buttonActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(m_context, "CANCELED BUTTON", Toast.LENGTH_LONG).show();
+                Toast.makeText(m_context, "BUTTON ACTIVATE", Toast.LENGTH_LONG).show();
+                holder.buttonCancel.setAlpha(1f);
+                holder.buttonActivate.setAlpha(0.3f);
+            }
+        });
+
+        holder.buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(m_context, "BUTTON CANCEL", Toast.LENGTH_LONG).show();
+                holder.buttonActivate.setAlpha(1f);
+                holder.buttonCancel.setAlpha(0.3f);
             }
         });
 

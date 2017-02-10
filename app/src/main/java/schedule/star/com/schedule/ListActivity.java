@@ -32,16 +32,6 @@ public class ListActivity extends AppCompatActivity {
         m_listView.setAdapter(m_alarmAdapter);
     }
 
-    public void onAlarmOnButtonClicked(View v)
-    {
-        Toast.makeText(this, "ALARM IS ALREADY ON", Toast.LENGTH_LONG).show();
-
-
-
-        /*ImageButton button = (ImageButton)this.findViewById(R.id.imageButton3);
-
-        button.setAlpha(0.3f);*/
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
