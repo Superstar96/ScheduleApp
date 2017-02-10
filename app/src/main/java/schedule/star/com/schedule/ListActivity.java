@@ -3,7 +3,10 @@ package schedule.star.com.schedule;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -11,8 +14,9 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
     private ListView m_listView;
+    private AlarmAdapter m_alarmAdapter;
 
-    private void init()
+    private void init() //MainActivity'de kullanıcının ayarladığı saatleri Bundle'dan al ve Özel olarak oluşturduğun Adaptöre ver ve Adaptörü ListView'a bağla.
     {
         m_listView = (ListView)this.findViewById(R.id.LISTACTIVITY_LISTVIEW_ALARMLIST);
         Intent intent = this.getIntent();
@@ -23,16 +27,21 @@ public class ListActivity extends AppCompatActivity {
 
         alarms = (ArrayList<Alarm>) bundle.getSerializable("LIST");
 
-        AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarms);
+        m_alarmAdapter = new AlarmAdapter(this, alarms);
 
-        m_listView.setAdapter(alarmAdapter);
+        m_listView.setAdapter(m_alarmAdapter);
     }
 
     public void onAlarmOnButtonClicked(View v)
     {
         Toast.makeText(this, "ALARM IS ALREADY ON", Toast.LENGTH_LONG).show();
-    }
 
+
+
+        /*ImageButton button = (ImageButton)this.findViewById(R.id.imageButton3);
+
+        button.setAlpha(0.3f);*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

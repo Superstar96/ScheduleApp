@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent)
+    public void onReceive(Context context, Intent intent) //Alarmın zamanı gelince yapılacak işleri yapan BroadcastReceiver Sınıfının onReceive Methodu
     {
         //"Time is " + intent.getStringExtra("TIME")
         Toast.makeText(context, "ALARM IS RINGING", Toast.LENGTH_LONG).show();
