@@ -20,7 +20,7 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     private TimePicker m_alarmTimer;
-    private AlarmAdapter m_alarmAdapter;
+    public static AlarmAdapter m_alarmAdapter;
     private AlarmReceiver m_alarmReceiver;
     private ListView m_alarmListView;
     private CalendarView m_calendarView;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         long difference = m_calendar.getTimeInMillis() - System.currentTimeMillis();
 
         if(difference <= 0) {
-            Toast.makeText(this, "Geçmiş bir tarihe alarm ayarlanamaz!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Geçmiş Bir Tarihe Alarm Ayarlanamaz!!!", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -154,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
         gregorianCalendar.set(Calendar.YEAR, m_year);
         gregorianCalendar.set(Calendar.MONTH, m_month-1);
         gregorianCalendar.set(Calendar.DAY_OF_MONTH, m_dayOfMonth);
-        gregorianCalendar.set(Calendar.HOUR_OF_DAY, m_alarmTimer.getHour());
-        gregorianCalendar.set(Calendar.MINUTE, m_alarmTimer.getMinute());
+        gregorianCalendar.set(Calendar.HOUR_OF_DAY, m_alarmTimer.getCurrentHour());
+        gregorianCalendar.set(Calendar.MINUTE, m_alarmTimer.getCurrentMinute());
         gregorianCalendar.set(Calendar.SECOND, 0);
 
         return gregorianCalendar;

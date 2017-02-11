@@ -11,4 +11,5 @@ public class ViewHolder {
     public TextView alarmTime;
     public ImageButton buttonActivate;
     public ImageButton buttonCancel;
+    public ImageButton buttonDelete;
 }

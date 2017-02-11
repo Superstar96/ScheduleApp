@@ -53,7 +53,7 @@ public class AlarmAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) //Inflate işlemini yapıp oluşan View'u geri döndürecek method (ListView'un her bir satırında gösterilecek View burada oluşturulur)
+    public View getView(final int position, View convertView, ViewGroup parent) //Inflate işlemini yapıp oluşan View'u geri döndürecek method (ListView'un her bir satırında gösterilecek View burada oluşturulur)
     {
         View alarmView;
         final ViewHolder holder = new ViewHolder();
@@ -68,6 +68,7 @@ public class AlarmAdapter extends BaseAdapter {
 
         holder.buttonActivate = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAEGBUTTON_ACTIVATE);
         holder.buttonCancel = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAGEBUTTON_CANCEL);
+        holder.buttonDelete = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAEGBUTTON_DELETE);
 
         holder.buttonActivate.setAlpha(0.3f);
 
@@ -77,6 +78,7 @@ public class AlarmAdapter extends BaseAdapter {
             @Override
             public void onClick(View v)
             {
+
                 long difference = alarm.getDifference();
 
                 if(difference <= 0) {
@@ -88,6 +90,7 @@ public class AlarmAdapter extends BaseAdapter {
 
                 holder.buttonCancel.setAlpha(1f);
                 holder.buttonActivate.setAlpha(0.3f);
+                holder.buttonActivate.setClickable(false);
 
                 Toast.makeText(m_context, "Alarmın Çalmasına Kalan Süre " + alarm.getDifference()/1000. + " sn", Toast.LENGTH_LONG).show();
 
@@ -101,8 +104,25 @@ public class AlarmAdapter extends BaseAdapter {
             public void onClick(View v)
             {
                 Toast.makeText(m_context, "***ALARM İPTAL EDİLDİ***", Toast.LENGTH_LONG).show();
+
                 holder.buttonActivate.setAlpha(1f);
                 holder.buttonCancel.setAlpha(0.3f);
+                holder.buttonCancel.setClickable(false);
+
+                AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
+                manager.cancel(pendingIntent);
+            }
+        });
+
+        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(m_context, "***ALARM SİLİNDİ***", Toast.LENGTH_LONG).show();
+
+                MainActivity.m_alarms.remove(position);
+                MainActivity.m_alarmAdapter.notifyDataSetChanged();
+
                 AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
                 manager.cancel(pendingIntent);
             }

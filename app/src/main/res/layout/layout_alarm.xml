@@ -18,7 +18,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/alarmon"
+        app:srcCompat="@drawable/alarmactivated"
         android:onClick="onAlarmActivatedButtonClicked"
         android:id="@+id/ALARMLAYOUT_IMAEGBUTTON_ACTIVATE"
         android:layout_weight="1"
@@ -27,12 +27,21 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/alarmcancel"
+        app:srcCompat="@drawable/alarmcanceled"
         android:onClick="onAlarmCanceledButtonClicked"
         android:id="@+id/ALARMLAYOUT_IMAGEBUTTON_CANCEL"
         android:layout_weight="1"
         android:background="@null"
         android:visibility="visible"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/alarmdelete"
+        android:onClick="onAlarmDeletedButtonClicked"
+        android:id="@+id/ALARMLAYOUT_IMAEGBUTTON_DELETE"
+        android:layout_weight="1"
+        android:background="@null"/>
 
 
 </LinearLayout>
