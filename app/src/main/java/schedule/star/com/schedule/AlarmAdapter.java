@@ -77,11 +77,21 @@ public class AlarmAdapter extends BaseAdapter {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(m_context, "BUTTON ACTIVATE", Toast.LENGTH_LONG).show();
+                long difference = alarm.getDifference();
+
+                if(difference <= 0) {
+                    Toast.makeText(m_context, "***Tarihi Geçmiş Alarm Tekrar Aktifleştirilemez***", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Toast.makeText(m_context, "***ALARM AKTİF EDİLDİ***", Toast.LENGTH_LONG).show();
+
                 holder.buttonCancel.setAlpha(1f);
                 holder.buttonActivate.setAlpha(0.3f);
+
+                Toast.makeText(m_context, "Alarmın Çalmasına Kalan Süre " + alarm.getDifference()/1000. + " sn", Toast.LENGTH_LONG).show();
+
                 AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
-                Toast.makeText(m_context, alarm.getDifference()/1000. + "", Toast.LENGTH_LONG).show();
                 manager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + alarm.getDifference(), pendingIntent);
             }
         });
@@ -90,7 +100,7 @@ public class AlarmAdapter extends BaseAdapter {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(m_context, "BUTTON CANCEL", Toast.LENGTH_LONG).show();
+                Toast.makeText(m_context, "***ALARM İPTAL EDİLDİ***", Toast.LENGTH_LONG).show();
                 holder.buttonActivate.setAlpha(1f);
                 holder.buttonCancel.setAlpha(0.3f);
                 AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);

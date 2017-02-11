@@ -90,7 +90,7 @@
                     <CalendarView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/calendarView2"/>
+                        android:id="@+id/MAINACTIVITY_CALENDARVIEW_CALENDAR"/>
                 </LinearLayout>
 
                 <LinearLayout

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 /**
- * Created by msı on 10.02.2017.
+ * Created by SUPERSTAR on 10.02.2017.
  */
 
 public class Alarm implements Serializable {
@@ -48,7 +48,12 @@ public class Alarm implements Serializable {
         return m_pendingIntent;
     }
 
-    public long getDifference() {return Math.abs(m_gregorianCalendar.getTimeInMillis() - System.currentTimeMillis());}
+    public long getDifference()
+    {
+        long difference = m_gregorianCalendar.getTimeInMillis() - System.currentTimeMillis();
+
+        return difference;
+    }
 
     @Override
     public String toString()

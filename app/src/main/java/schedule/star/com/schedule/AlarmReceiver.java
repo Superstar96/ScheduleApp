@@ -17,5 +17,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         //"Time is " + intent.getStringExtra("TIME")
         Toast.makeText(context, "ALARM IS RINGING", Toast.LENGTH_LONG).show();
     }
-
 }
