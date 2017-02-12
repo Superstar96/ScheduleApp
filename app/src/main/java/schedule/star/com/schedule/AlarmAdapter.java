@@ -26,7 +26,6 @@ public class AlarmAdapter extends BaseAdapter {
     private List<Alarm> m_alarmList;
     private Context m_context;
 
-
     public AlarmAdapter(Activity activity, List<Alarm> list) //Constructor
     {
         m_context = activity;
@@ -70,15 +69,16 @@ public class AlarmAdapter extends BaseAdapter {
         holder.buttonCancel = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAGEBUTTON_CANCEL);
         holder.buttonDelete = (ImageButton)alarmView.findViewById(R.id.ALARMLAYOUT_IMAEGBUTTON_DELETE);
 
-        holder.buttonActivate.setAlpha(0.3f);
+
+        //holder.buttonActivate.setAlpha(0.3f);
 
         //Button Listeners
 
+        //Activate Button'u iptal edilmiş bir alarmı eğer tarihi geçmediyse tekrar aktif hale getirir.
         holder.buttonActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-
                 long difference = alarm.getDifference();
 
                 if(difference <= 0) {
@@ -91,14 +91,18 @@ public class AlarmAdapter extends BaseAdapter {
                 holder.buttonCancel.setAlpha(1f);
                 holder.buttonActivate.setAlpha(0.3f);
                 holder.buttonActivate.setClickable(false);
+                holder.buttonCancel.setClickable(true);
 
-                Toast.makeText(m_context, "Alarmın Çalmasına Kalan Süre " + alarm.getDifference()/1000. + " sn", Toast.LENGTH_LONG).show();
+                alarm.setStatus(false);
+
+                //Toast.makeText(m_context, "Alarmın Çalmasına Kalan Süre " + alarm.getDifference()/1000. + " sn", Toast.LENGTH_LONG).show();
 
                 AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
                 manager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + alarm.getDifference(), pendingIntent);
             }
         });
 
+        //Cancel Button'u Daha önceden ayarlanmış olan bir alarmı iptal etmek için kullanılır
         holder.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -108,12 +112,16 @@ public class AlarmAdapter extends BaseAdapter {
                 holder.buttonActivate.setAlpha(1f);
                 holder.buttonCancel.setAlpha(0.3f);
                 holder.buttonCancel.setClickable(false);
+                holder.buttonActivate.setClickable(true);
+
+                alarm.setStatus(true);
 
                 AlarmManager manager = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
                 manager.cancel(pendingIntent);
             }
         });
 
+        //Delete Button'a basılınca Adapter'e verilen ArrayList'ten o satır silinecek ve Adapter bundan haberdar edilecek(Belirli bir alarmı silmek için kullanılır)
         holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -128,7 +136,20 @@ public class AlarmAdapter extends BaseAdapter {
             }
         });
 
-        return alarmView;
+        if (!alarm.getStatus()) {
+            holder.buttonCancel.setClickable(true);
+            holder.buttonCancel.setAlpha(1f);
+            holder.buttonActivate.setClickable(false);
+            holder.buttonActivate.setAlpha(0.3f);
 
+        }
+        else {
+            holder.buttonCancel.setClickable(false);
+            holder.buttonCancel.setAlpha(0.3f);
+            holder.buttonActivate.setClickable(true);
+            holder.buttonActivate.setAlpha(1f);
+        }
+
+        return alarmView;
     }
 }

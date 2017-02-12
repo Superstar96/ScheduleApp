@@ -7,13 +7,13 @@
 
     <TextView
         android:text=""
-        android:textSize="30dp"
+        android:textSize="23sp"
         android:textColor="#7c4dff"
         android:ems="7"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:id="@+id/ALARMLAYOUT_TEXTVIEW_ALARMTIME"
-        android:gravity="center"/>
+        android:gravity="center_vertical"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -21,6 +21,8 @@
         app:srcCompat="@drawable/alarmactivated"
         android:onClick="onAlarmActivatedButtonClicked"
         android:id="@+id/ALARMLAYOUT_IMAEGBUTTON_ACTIVATE"
+        android:alpha="1"
+        android:clickable="false"
         android:layout_weight="1"
         android:background="@null"/>
 
@@ -30,6 +32,8 @@
         app:srcCompat="@drawable/alarmcanceled"
         android:onClick="onAlarmCanceledButtonClicked"
         android:id="@+id/ALARMLAYOUT_IMAGEBUTTON_CANCEL"
+        android:alpha="1"
+        android:clickable="false"
         android:layout_weight="1"
         android:background="@null"
         android:visibility="visible"/>

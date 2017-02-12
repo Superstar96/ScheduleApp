@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Alarm> m_alarms;
     private int m_year=0, m_month=0, m_dayOfMonth=0;
     private static int m_count = 0;
+    private Months []  m_months;
 
     //*************************************************************************************************************************************************
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private void init()
     {
         m_alarms = new ArrayList<>();
+        m_months = Months.values();
+
         this.initGUI();
     }
 
@@ -55,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 m_month = month + 1;
                 m_dayOfMonth = dayOfMonth;
 
-                String date = String.format("***Seçilen Tarih***%nGÜN:%d%nAY:%d%nYIL:%d", dayOfMonth, month+1, year);
+                String date = String.format(Locale.ENGLISH, "***Seçilen Tarih***%n        GÜN:%d%n        AY:%s%n        YIL:%d", dayOfMonth, m_months[m_month], year);
 
-                Toast.makeText(MainActivity.this, date, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, date, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -90,19 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onExitButtonClicked(View v) {this.finish();}
 
-    public void onListButtonClicked(View v) //Kullanıcın ayarladağı saatleri tutan ArrayList'i Bundle'a koy ve Intent ile diğer aktiviteyi başlatıp ona gönder.
-    {
-        Intent intent = new Intent(this, ListActivity.class);
-
-        startActivity(intent);
-    }
-
     public void onSetAlarmButtonClicked(View v) //Kullanıcının ayarladığı saatin yazısını ArrayList'e aktar
     {
         //Toast.makeText(this, String.format("m_year:%d%nm_month:%d%nm_dayOfMonth:%d%n", m_year, m_month, m_dayOfMonth), Toast.LENGTH_LONG).show();
-
-/*        String time = String.valueOf(m_alarmTimer.getHour());
-        time += ":" + String.valueOf(m_alarmTimer.getMinute());*/
 
         Intent intent = new Intent (this, AlarmReceiver.class);
         //intent.putExtra("TIME", time);
@@ -122,19 +115,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "***ALARM AYARLANDI***", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "***ALARM AYARLANDI***", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(this, "Alarmın Çalmasına Kalan Süre = " + difference/1000. + " sn", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Alarmın Çalmasına Kalan Süre = " + difference/1000. + " sn", Toast.LENGTH_LONG).show();
 
-        String dateTime = this.getDate(m_calendar);
+        String dateTime = this.getDateTime(m_calendar);
 
-        Toast.makeText(this, dateTime, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, String.format(Locale.ENGLISH, "Alarm Zamanı%n") + dateTime, Toast.LENGTH_LONG).show();
 
 
         m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
         m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
 
-        m_alarms.add(new Alarm(dateTime, true, m_pendingIntent, m_calendar));
+        m_alarms.add(new Alarm(dateTime, false, m_pendingIntent, m_calendar));
         m_alarmAdapter.notifyDataSetChanged();
 
         m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);
@@ -161,11 +154,27 @@ public class MainActivity extends AppCompatActivity {
         return gregorianCalendar;
     }
 
-    private String getDate(GregorianCalendar gregorianCalendar)
+    private String getDateTime(GregorianCalendar gregorianCalendar)
     {
-        String date = String.format("%d:%d %d/%d/%d",gregorianCalendar.get(Calendar.HOUR_OF_DAY), gregorianCalendar.get(Calendar.MINUTE),
-                                                                                        gregorianCalendar.get(Calendar.DAY_OF_MONTH), gregorianCalendar.get(Calendar.MONTH) + 1, gregorianCalendar.get(Calendar.YEAR));
-        return date;
+        String minute = String.valueOf(gregorianCalendar.get(Calendar.MINUTE));
+        String hour = String.valueOf(gregorianCalendar.get(Calendar.HOUR_OF_DAY));
+        String day = String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(gregorianCalendar.get(Calendar.MONTH) + 1);
+        String year = String.valueOf(gregorianCalendar.get(Calendar.YEAR));
+
+        if (minute.length() < 2)
+            minute = "0" + minute;
+
+        if (hour.length() < 2)
+            hour = "0" + hour;
+
+        if (day.length() < 2)
+            day = "0" + day;
+
+        if (month.length() < 2)
+            month = "0" + month;
+
+        return String.format(Locale.ENGLISH, "%s:%s %s/%s/%s", hour, minute, day, month, year);
     }
 
     //*************************************************************************************************************************************************
