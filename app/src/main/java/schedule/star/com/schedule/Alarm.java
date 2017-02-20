@@ -12,16 +12,20 @@ import java.util.GregorianCalendar;
 public class Alarm implements Serializable {
     private String m_alarmTime;
     private boolean isOn;
-    private PendingIntent m_pendingIntent;
+    transient private PendingIntent m_pendingIntent;
     private GregorianCalendar m_gregorianCalendar;
+    private int m_order;
 
-    public Alarm(String alarmTime, boolean status, PendingIntent pendingIntent, GregorianCalendar gregorianCalendar )
+    public Alarm(String alarmTime, boolean status, int order, PendingIntent pendingIntent, GregorianCalendar gregorianCalendar )
     {
         m_alarmTime = alarmTime;
         isOn = status;
+        m_order = order;
         m_pendingIntent = pendingIntent;
         m_gregorianCalendar = gregorianCalendar;
     }
+
+    public int getOrder() { return m_order; }
 
     public void setAlarmTime(String alarmTime)
     {
@@ -43,10 +47,14 @@ public class Alarm implements Serializable {
         return isOn;
     }
 
+    public void setPendingIntent(PendingIntent pendingIntent) { m_pendingIntent = pendingIntent; }
+
     public PendingIntent getPendingIntent()
     {
         return m_pendingIntent;
     }
+
+    public GregorianCalendar getCalendar() { return m_gregorianCalendar; }
 
     public long getDifference()
     {

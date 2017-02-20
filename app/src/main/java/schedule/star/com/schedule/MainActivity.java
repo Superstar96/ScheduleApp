@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     {
         m_alarms = new ArrayList<>();
         m_months = Months.values();
-
+        this.setAlarmList();
         this.initGUI();
     }
 
@@ -121,9 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
-        m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
+        m_pendingIntent = PendingIntent.getBroadcast(this, m_count , intent, 0);
 
-        m_alarms.add(new Alarm(dateTime, false, m_pendingIntent, m_calendar)); //Kurulan Alarmı Diziye Ekle
+        m_alarms.add(new Alarm(dateTime, false, m_count++, m_pendingIntent, m_calendar)); //Kurulan Alarmı Diziye Ekle
         m_alarmAdapter.notifyDataSetChanged(); //ListView'u bilgilendir
 
         m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent); //Alarmı Başlat
@@ -132,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
     //*************************************************************************************************************************************************
 
     //CLASS METHODS
+
+    private void setAlarmList()
+    {
+        FileReadWrite file = new FileReadWrite(this);
+
+        m_alarms = file.getAlarms();
+    }
 
     private GregorianCalendar setDate(GregorianCalendar gregorianCalendar)
     {
@@ -182,6 +189,14 @@ public class MainActivity extends AppCompatActivity {
     {
         m_alarmReceiver = new AlarmReceiver();
         super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        FileReadWrite file = new FileReadWrite(this);
+        file.setAlarms();
+        super.onPause();
     }
 
     @Override
