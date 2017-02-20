@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         m_alarmAdapter = new AlarmAdapter(this, m_alarms);
         m_alarmListView.setAdapter(m_alarmAdapter);
 
+        //TAB Görünümünün Ayarlanması
         TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
 
@@ -93,33 +94,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void onExitButtonClicked(View v) {this.finish();}
 
-    public void onSetAlarmButtonClicked(View v) //Kullanıcının ayarladığı saatin yazısını ArrayList'e aktar
+    public void onSetAlarmButtonClicked(View v)  //Alarmı Ayarlayan Method
     {
-        //Toast.makeText(this, String.format("m_year:%d%nm_month:%d%nm_dayOfMonth:%d%n", m_year, m_month, m_dayOfMonth), Toast.LENGTH_LONG).show();
-
         Intent intent = new Intent (this, AlarmReceiver.class);
-        //intent.putExtra("TIME", time);
 
         m_calendar = new GregorianCalendar();
 
-        m_calendar = this.setDate(m_calendar);
+        m_calendar = this.setDate(m_calendar); //Saati ve Tarihi alıp nesneye set et
 
-        if(m_calendar == null) {
+        if(m_calendar == null) { //Kullanıcı henüz bir tarih belirtmemişse Ekleme
             return;
         }
 
         long difference = m_calendar.getTimeInMillis() - System.currentTimeMillis();
 
-        if(difference <= 0) {
+        if(difference <= 0) { //Alarmın Zamanı Zaten Geçmişse Ekleme
             Toast.makeText(this, "Geçmiş Bir Tarihe Alarm Ayarlanamaz!!!", Toast.LENGTH_LONG).show();
             return;
         }
 
         Toast.makeText(this, "***ALARM AYARLANDI***", Toast.LENGTH_SHORT).show();
 
-        //Toast.makeText(this, "Alarmın Çalmasına Kalan Süre = " + difference/1000. + " sn", Toast.LENGTH_LONG).show();
-
-        String dateTime = this.getDateTime(m_calendar);
+        String dateTime = this.getDateTime(m_calendar); //Tarih ve Saatin Yazı Biçimini Al
 
         Toast.makeText(this, String.format(Locale.ENGLISH, "Alarm Zamanı%n") + dateTime, Toast.LENGTH_LONG).show();
 
@@ -127,10 +123,10 @@ public class MainActivity extends AppCompatActivity {
         m_alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
         m_pendingIntent = PendingIntent.getBroadcast(this, m_count++ , intent, 0);
 
-        m_alarms.add(new Alarm(dateTime, false, m_pendingIntent, m_calendar));
-        m_alarmAdapter.notifyDataSetChanged();
+        m_alarms.add(new Alarm(dateTime, false, m_pendingIntent, m_calendar)); //Kurulan Alarmı Diziye Ekle
+        m_alarmAdapter.notifyDataSetChanged(); //ListView'u bilgilendir
 
-        m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent);
+        m_alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() +  difference, m_pendingIntent); //Alarmı Başlat
     }
 
     //*************************************************************************************************************************************************
